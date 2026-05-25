@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>AIEngineer Auth</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 500px; margin: 50px auto; padding: 20px; }
+        input { width: 100%; padding: 8px; margin: 5px 0 15px; box-sizing: border-box; }
+        button { width: 100%; padding: 10px; background: #007bff; color: white; border: none; cursor: pointer; }
+        button:hover { background: #0056b3; }
+        .message { padding: 10px; margin: 10px 0; border-radius: 4px; }
+        .success { background: #d4edda; color: #155724; }
+        .error { background: #f8d7da; color: #721c24; }
+        .section { margin-bottom: 30px; border: 1px solid #ddd; padding: 20px; border-radius: 8px; }
+    </style>
+</head>
+<body>
+    <h1>AIEngineer Auth System</h1>
+    <div id="message"></div>
+
+    <!-- Register -->
+    <div class="section">
+        <h2>Register</h2>
+        <input type="email" id="reg-email" placeholder="Email">
+        <input type="password" id="reg-password" placeholder="Password">
+        <button onclick="register()">Register</button>
+    </div>
+
+    <!-- Verify OTP -->
+    <div class="section">
+        <h2>Verify OTP</h2>
+        <input type="email" id="verify-email" placeholder="Email">
+        <input type="text" id="verify-otp" placeholder="OTP">
+        <button onclick="verifyOTP()">Verify</button>
+    </div>
+
+    <!-- Login -->
+    <div class="section">
+        <h2>Login</h2>
+        <input type="email" id="login-email" placeholder="Email">
+        <input type="password" id="login-password" placeholder="Password">
+        <button onclick="login()">Login</button>
+    </div>
+
+    <!-- Actions -->
+    <div class="section">
+        <h2>Actions</h2>
+        <button onclick="getMe()">Get My Details</button>
+        <br><br>
+        <button onclick="logout()" style="background:#dc3545;">Logout</button>
+    </div>
+
+    <script>
+        function showMessage(msg, type) {
+            document.getElementById('message').innerHTML =
+                `<div class="message ${type}">${msg}</div>`;
+        }
+
+        async function getCookie(name) {
+            const value = `; ${document.cookie}`;
+            const parts = value.split(`; ${name}=`);
+            if (parts.length === 2) return parts.pop().split(';').shift();
+        }
+
+        async function register() {
+            const res = await fetch('/api/register/', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json',
+                    'X-CSRFToken': await getCookie('csrftoken')},
+                body: JSON.stringify({
+                    email: document.getElementById('reg-email').value,
+                    password: document.getElementById('reg-password').value
+                }),
+                credentials: 'include'
+            });
+            const data = await res.json();
+            showMessage(JSON.stringify(data), res.ok ? 'success' : 'error');
+        }
+
+        async function verifyOTP() {
+            const res = await fetch('/api/register/verify/', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json',
+                    'X-CSRFToken': await getCookie('csrftoken')},
+                body: JSON.stringify({
+                    email: document.getElementById('verify-email').value,
+                    otp: document.getElementById('verify-otp').value
+                }),
+                credentials: 'include'
+            });
+            const data = await res.json();
+            showMessage(JSON.stringify(data), res.ok ? 'success' : 'error');
+        }
+
+        async function login() {
+            const res = await fetch('/api/login/', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json',
+                    'X-CSRFToken': await getCookie('csrftoken')},
+                body: JSON.stringify({
+                    email: document.getElementById('login-email').value,
+                    password: document.getElementById('login-password').value
+                }),
+                credentials: 'include'
+            });
+            const data = await res.json();
+            showMessage(JSON.stringify(data), res.ok ? 'success' : 'error');
+        }
+
+        async function getMe() {
+            const res = await fetch('/api/me/', {
+                credentials: 'include',
+                headers: {'X-CSRFToken': await getCookie('csrftoken')}
+            });
+            const data = await res.json();
+            showMessage(JSON.stringify(data), res.ok ? 'success' : 'error');
+        }
+
+        async function logout() {
+            const res = await fetch('/api/logout/', {
+                method: 'POST',
+                credentials: 'include',
+                headers: {'X-CSRFToken': await getCookie('csrftoken')}
+            });
+            const data = await res.json();
+            showMessage(JSON.stringify(data), res.ok ? 'success' : 'error');
+        }
+    </script>
+</body>
+</html>
