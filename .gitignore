@@ -1,0 +1,41 @@
+# 🔥 Virtual Environment
+venv/
+env/
+ENV/
+.venv/
+myenv
+
+# 🐍 Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Django stuff
+db.sqlite3
+*.log
+
+# Django migrations (optional keep or ignore depending on submission)
+# */migrations/__pycache__/
+
+# Environment variables
+.env
+
+# IDE files
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Static / media (if used locally)
+media/
+staticfiles/
+
+# pytest / coverage
+.coverage
+htmlcov/
+
+# Jupyter
+.ipynb_checkpoints/
