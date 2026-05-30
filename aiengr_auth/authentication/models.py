@@ -4,21 +4,21 @@ import secrets
 
 
 # how users are created factory
-# UserManager = how users get created safely
-class UserManager(BaseUserManager):
+# UserManager = how users get created and managed safely 
+class UserManager(BaseUserManager):  #manager helpr behavior
     def create_user(self, email, password=None):
         if not email:
             raise ValueError('Email is required')
         email = self.normalize_email(email)
         user = self.model(email=email)
         # hashing passsword
-        user.set_password(password)
+        user.set_password(password)  #to hash the password instead of raw
         # saving in db
         user.save(using=self._db)
         return user
 
-
-class User(AbstractBaseUser):
+# this is the main user model blueprint
+class User(AbstractBaseUser):  #gets auth password features
     email = models.EmailField(unique=True)
     is_active = models.BooleanField(default=False)  # False until verified
     created_at = models.DateTimeField(auto_now_add=True)

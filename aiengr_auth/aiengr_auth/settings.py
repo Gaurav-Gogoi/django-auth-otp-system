@@ -89,7 +89,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Swagger
 SWAGGER_SETTINGS = {
-    'USE_SESSION_AUTH': False,
+    'USE_SESSION_AUTH': True,
     'SECURITY_DEFINITIONS': {},
 }
 
